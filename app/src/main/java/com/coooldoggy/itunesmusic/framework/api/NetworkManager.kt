@@ -30,7 +30,11 @@ class NetworkManager{
     }
 
     private fun provideLoggingInterceptor(): HttpLoggingInterceptor {
-        val interceptor = HttpLoggingInterceptor()
+        val interceptor = HttpLoggingInterceptor(object: HttpLoggingInterceptor.Logger{
+            override fun log(message: String) {
+                Log.d(TAG, message)
+            }
+        })
         interceptor.level = HttpLoggingInterceptor.Level.BODY
         return interceptor
     }

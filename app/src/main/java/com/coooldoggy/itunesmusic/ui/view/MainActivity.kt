@@ -1,15 +1,14 @@
-package com.coooldoggy.itunesmusic.ui
+package com.coooldoggy.itunesmusic.ui.view
 
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.coooldoggy.itunesmusic.R
 import com.coooldoggy.itunesmusic.databinding.ActivityMainBinding
+import com.coooldoggy.itunesmusic.framework.api.ApiManager
 import com.coooldoggy.itunesmusic.ui.common.BaseActivity
 
 class MainActivity : BaseActivity() {
@@ -22,12 +21,14 @@ class MainActivity : BaseActivity() {
 
     private val trackListFragment: TrackListFragment by lazy {
         val fragment = supportFragmentManager.findFragmentByTag(FragmentEnum.TRACK.tag)
-        return@lazy fragment as? TrackListFragment ?: TrackListFragment()
+        return@lazy fragment as? TrackListFragment
+            ?: TrackListFragment()
     }
 
     private val favoriteListFragment: FavoriteListFragment by lazy {
         val fragment = supportFragmentManager.findFragmentByTag(FragmentEnum.FAVORITE.tag)
-        return@lazy fragment as? FavoriteListFragment ?: FavoriteListFragment()
+        return@lazy fragment as? FavoriteListFragment
+            ?: FavoriteListFragment()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,15 +52,18 @@ class MainActivity : BaseActivity() {
     }
 
     private val bottomTapClickListener = View.OnClickListener {
-        var fragmentEnum = FragmentEnum.TRACK
+        var fragmentEnum =
+            FragmentEnum.TRACK
 
         when(it.id){
             R.id.bt_track -> {
-                fragmentEnum = FragmentEnum.TRACK
+                fragmentEnum =
+                    FragmentEnum.TRACK
             }
 
             R.id.bt_favorite -> {
-                fragmentEnum = FragmentEnum.FAVORITE
+                fragmentEnum =
+                    FragmentEnum.FAVORITE
             }
         }
 

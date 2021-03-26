@@ -1,4 +1,4 @@
-package com.coooldoggy.itunesmusic.ui
+package com.coooldoggy.itunesmusic.ui.viewmodel
 
 import android.app.Application
 import com.coooldoggy.itunesmusic.ui.common.BaseViewModel

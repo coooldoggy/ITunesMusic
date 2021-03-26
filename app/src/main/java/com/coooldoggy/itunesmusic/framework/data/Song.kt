@@ -49,10 +49,10 @@ data class Song(
     val artworkUrl100: String,
 
     @SerializedName("collectionPrice")
-    val collectionPrice: Int,
+    val collectionPrice: Float,
 
     @SerializedName("trackPrice")
-    val trackPrice: Int,
+    val trackPrice: Float,
 
     @SerializedName("releaseDate")
     val releaseDate: String,
