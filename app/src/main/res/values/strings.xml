@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ITunesMusic</string>
+    <string name="track">track</string>
+    <string name="favorite">favorite</string>
+    <string name="error_msg">일시적인 오류로\n정보를 불러올수 없습니다.</string>
+    <string name="retry_msg">다시 시도</string>
+</resources>
