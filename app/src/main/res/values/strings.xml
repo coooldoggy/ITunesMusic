@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ITunesMusic</string>
+    <string name="track">track</string>
+    <string name="favorite">favorite</string>
 </resources>

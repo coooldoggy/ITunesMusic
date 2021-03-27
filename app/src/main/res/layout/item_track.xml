@@ -32,6 +32,13 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="20dp" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="5dp" />
+
     <ImageView
         android:id="@+id/iv_artWorkUrl"
         imageUrl="@{model.artworkUrl60}"
@@ -84,8 +91,8 @@
     <ImageView
         android:id="@+id/iv_favorite"
         android:src="@drawable/image_favorite_selector"
-        app:layout_constraintTop_toBottomOf="@id/guidelineTop"
-        app:layout_constraintRight_toLeftOf="@id/guidelineRight"
+        app:layout_constraintBottom_toTopOf="@id/guidelineBottom"
+        app:layout_constraintEnd_toStartOf="@id/guidelineRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

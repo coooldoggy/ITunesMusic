@@ -1,6 +1,7 @@
 package com.coooldoggy.itunesmusic.ui.view
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -10,6 +11,7 @@ import com.coooldoggy.itunesmusic.R
 import com.coooldoggy.itunesmusic.databinding.ActivityMainBinding
 import com.coooldoggy.itunesmusic.framework.api.ApiManager
 import com.coooldoggy.itunesmusic.ui.common.BaseActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : BaseActivity() {
     private lateinit var viewDataBinding: ActivityMainBinding
@@ -42,38 +44,35 @@ class MainActivity : BaseActivity() {
 
     private fun setView(){
         setFragmentID(R.id.fragment_container)
-        viewDataBinding.btTrack.setOnClickListener(bottomTapClickListener)
-        viewDataBinding.btFavorite.setOnClickListener(bottomTapClickListener)
         viewDataBinding.viewpager.apply {
             offscreenPageLimit = 2
             adapter = FragmentPageAdapter(this@MainActivity)
             currentItem = 0
         }
-        viewDataBinding.btTrack.isSelected = true
+        viewDataBinding.bottomNav.setOnNavigationItemSelectedListener(bottomNavClickListener)
     }
 
-    private val bottomTapClickListener = View.OnClickListener { view ->
-        var fragmentEnum =
-            FragmentEnum.TRACK
+    private val bottomNavClickListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+        var fragmentEnum = FragmentEnum.TRACK
 
-        when(view.id){
-            R.id.bt_track -> {
-                fragmentEnum =
-                    FragmentEnum.TRACK
+        when(item.itemId){
+            R.id.bottom_track -> {
+                fragmentEnum = FragmentEnum.TRACK
+                changeFragment(fragmentEnum)
+                return@OnNavigationItemSelectedListener true
             }
-
-            R.id.bt_favorite -> {
-                fragmentEnum =
-                    FragmentEnum.FAVORITE
+            R.id.bottom_favorite -> {
+                fragmentEnum = FragmentEnum.FAVORITE
+                changeFragment(fragmentEnum)
+                return@OnNavigationItemSelectedListener true
+            }
+            else -> {
+                changeFragment(fragmentEnum)
+                return@OnNavigationItemSelectedListener true
             }
         }
-
-        viewDataBinding.btFavorite.isSelected = false
-        viewDataBinding.btTrack.isSelected = false
-        view.isSelected = true
-
-        changeFragment(fragmentEnum)
     }
+
 
     private fun changeFragment(fragmentEnum: FragmentEnum){
         when(fragmentEnum){
