@@ -49,13 +49,14 @@ class MainActivity : BaseActivity() {
             adapter = FragmentPageAdapter(this@MainActivity)
             currentItem = 0
         }
+        viewDataBinding.btTrack.isSelected = true
     }
 
-    private val bottomTapClickListener = View.OnClickListener {
+    private val bottomTapClickListener = View.OnClickListener { view ->
         var fragmentEnum =
             FragmentEnum.TRACK
 
-        when(it.id){
+        when(view.id){
             R.id.bt_track -> {
                 fragmentEnum =
                     FragmentEnum.TRACK
@@ -66,6 +67,10 @@ class MainActivity : BaseActivity() {
                     FragmentEnum.FAVORITE
             }
         }
+
+        viewDataBinding.btFavorite.isSelected = false
+        viewDataBinding.btTrack.isSelected = false
+        view.isSelected = true
 
         changeFragment(fragmentEnum)
     }

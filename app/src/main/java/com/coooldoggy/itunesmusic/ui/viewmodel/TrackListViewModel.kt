@@ -27,6 +27,7 @@ class TrackListViewModel (application: Application): BaseViewModel(application){
                }
                 sendToEvent.value = BaseViewModelEvent.Event(EVENT_TRACK_LOADED, "")
             }.onFailure {
+                sendToEvent.value = BaseViewModelEvent.ShowToastMessage(getApplication(), "실패")
                 it.printStackTrace()
             }
         }

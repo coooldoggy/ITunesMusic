@@ -18,6 +18,9 @@ data class Song(
     @SerializedName("trackId")
     val trackId: Int,
 
+    @SerializedName("artistName")
+    val artistName: String,
+
     @SerializedName("collectionName")
     val collectionName: String,
 
