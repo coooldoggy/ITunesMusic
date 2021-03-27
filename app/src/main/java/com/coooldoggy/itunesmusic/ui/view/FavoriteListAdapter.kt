@@ -4,27 +4,28 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.coooldoggy.itunesmusic.databinding.ItemTrackBinding
+import com.coooldoggy.itunesmusic.databinding.ItemFavoriteBinding
 import com.coooldoggy.itunesmusic.framework.data.Song
 
-class TrackListAdapter(var tracklist: ArrayList<Song>) :
+class FavoriteListAdapter(var favoriteList: ArrayList<Song>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var starClick: StarClick? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return TrackListItemHolder.from(parent)
+        return FavoriteListItemHolder.from(parent)
     }
 
     override fun getItemCount(): Int {
-        return tracklist.size
+        return favoriteList.size
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val song = tracklist[position]
-        (holder as TrackListItemHolder).bind(song)
+        val song = favoriteList[position]
+        (holder as FavoriteListItemHolder).bind(song)
         holder.starIcon.setOnClickListener {
             starClick?.onClick(song)
         }
+        holder.starIcon.isSelected = true
     }
 
     interface StarClick {
@@ -32,15 +33,15 @@ class TrackListAdapter(var tracklist: ArrayList<Song>) :
     }
 }
 
-class TrackListItemHolder(private val binding: ItemTrackBinding) :
+class FavoriteListItemHolder(private val binding: ItemFavoriteBinding) :
     RecyclerView.ViewHolder(binding.root) {
     lateinit var starIcon: ImageView
 
     companion object {
         fun from(parent: ViewGroup): RecyclerView.ViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
-            val binding = ItemTrackBinding.inflate(layoutInflater, parent, false)
-            return TrackListItemHolder(binding)
+            val binding = ItemFavoriteBinding.inflate(layoutInflater, parent, false)
+            return FavoriteListItemHolder(binding)
         }
     }
 

@@ -1,20 +1,27 @@
 package com.coooldoggy.itunesmusic.ui.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.coooldoggy.itunesmusic.R
 import com.coooldoggy.itunesmusic.databinding.FragmentTracklistBinding
+import com.coooldoggy.itunesmusic.framework.data.Song
 import com.coooldoggy.itunesmusic.ui.common.BaseFragment
+import com.coooldoggy.itunesmusic.ui.viewmodel.FavoriteViewModel
 import com.coooldoggy.itunesmusic.ui.viewmodel.TrackListViewModel
 
 class TrackListFragment : BaseFragment(){
     private lateinit var viewDataBinding: FragmentTracklistBinding
     private val viewModel by viewModels<TrackListViewModel>()
+    private val favViewModel by activityViewModels<FavoriteViewModel>()
+    private lateinit var trackListAdapter: TrackListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,6 +30,7 @@ class TrackListFragment : BaseFragment(){
     ): View? {
         viewDataBinding = DataBindingUtil.inflate<FragmentTracklistBinding>(inflater, R.layout.fragment_tracklist, container, false).apply {
             lifecycleOwner = this@TrackListFragment
+            model = viewModel
         }
         observeViewModelEvent(this, viewModel)
         return viewDataBinding.root
@@ -30,18 +38,38 @@ class TrackListFragment : BaseFragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        trackListAdapter = TrackListAdapter(viewModel.trackList).apply {
+            starClick = object : TrackListAdapter.StarClick{
+                override fun onClick(song: Song) {
+                    Log.d(TAG, "$song")
+                    favViewModel.insertSong(song)
+                }
+            }
+        }
         viewDataBinding.rvTrack.apply {
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(true)
-            adapter = TrackListAdapter(viewModel.trackList)
+            adapter = trackListAdapter
+            addOnScrollListener(rvScrollListener)
         }
         viewModel.loadTrackList()
+    }
+
+    private val rvScrollListener = object : RecyclerView.OnScrollListener(){
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            val manager = recyclerView.layoutManager as LinearLayoutManager
+            if (manager.itemCount <= manager.findLastVisibleItemPosition() + 2){
+                viewModel.loadTrackList()
+            }
+        }
     }
 
     override fun onViewModelEvent(eventId: Int, param: Any) {
         when(eventId){
             TrackListViewModel.EVENT_TRACK_LOADED -> {
                 viewDataBinding.rvTrack.adapter?.notifyDataSetChanged()
+            }
+            TrackListViewModel.EVENT_TRACK_LOAD_FAIL -> {
             }
         }
     }

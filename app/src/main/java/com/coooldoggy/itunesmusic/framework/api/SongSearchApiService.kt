@@ -10,6 +10,7 @@ interface SongSearchApiService {
     @GET("search")
     suspend fun querySong(
         @Query("term") term: String = "greenday",
-        @Query("entity") entity: String = "song"
+        @Query("entity") entity: String = "song",
+        @Query("offset") offset: Int = 0
     ): Response<SongSearchResult>
 }

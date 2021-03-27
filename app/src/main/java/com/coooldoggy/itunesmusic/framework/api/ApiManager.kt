@@ -14,8 +14,8 @@ object ApiManager {
         return songSearchApiService
     }
 
-    suspend fun querySong(context: Context): Response<SongSearchResult>{
+    suspend fun querySong(context: Context, offset: Int): Response<SongSearchResult>{
         createAPI(context = context)
-        return songSearchApiService.querySong()
+        return songSearchApiService.querySong(offset = offset)
     }
 }
