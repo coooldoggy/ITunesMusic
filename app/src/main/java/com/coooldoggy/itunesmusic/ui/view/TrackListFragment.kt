@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.coooldoggy.itunesmusic.R
 import com.coooldoggy.itunesmusic.databinding.FragmentTracklistBinding
+import com.coooldoggy.itunesmusic.databinding.LayoutLoadingErrorBinding
 import com.coooldoggy.itunesmusic.framework.data.Song
 import com.coooldoggy.itunesmusic.ui.common.BaseFragment
 import com.coooldoggy.itunesmusic.ui.viewmodel.FavoriteViewModel
@@ -21,6 +22,7 @@ import kotlinx.coroutines.launch
 
 class TrackListFragment : BaseFragment(){
     private lateinit var viewDataBinding: FragmentTracklistBinding
+    private lateinit var errorBinding: LayoutLoadingErrorBinding
     private val viewModel by viewModels<TrackListViewModel>()
     private val favViewModel by activityViewModels<FavoriteViewModel>()
     private lateinit var trackListAdapter: TrackListAdapter
@@ -33,6 +35,10 @@ class TrackListFragment : BaseFragment(){
         viewDataBinding = DataBindingUtil.inflate<FragmentTracklistBinding>(inflater, R.layout.fragment_tracklist, container, false).apply {
             lifecycleOwner = this@TrackListFragment
             model = viewModel
+        }
+        errorBinding = viewDataBinding.vsError
+        errorBinding.rlRetry.setOnClickListener {
+            viewModel.loadTrackList()
         }
         observeViewModelEvent(this, viewModel)
         observeViewModelEvent(viewLifecycleOwner, favViewModel)
@@ -77,9 +83,11 @@ class TrackListFragment : BaseFragment(){
     override fun onViewModelEvent(eventId: Int, param: Any) {
         when(eventId){
             TrackListViewModel.EVENT_TRACK_LOADED -> {
+                errorBinding.root.visibility = View.GONE
                 viewDataBinding.rvTrack.adapter?.notifyDataSetChanged()
             }
             TrackListViewModel.EVENT_TRACK_LOAD_FAIL -> {
+                viewDataBinding.vsError.root.visibility = View.VISIBLE
             }
             TrackListViewModel.EVENT_TRACK_FAV_DELETED -> {
                 viewDataBinding.rvTrack.adapter?.notifyDataSetChanged()
