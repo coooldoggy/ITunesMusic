@@ -4,6 +4,9 @@
         <variable
             name="model"
             type="com.coooldoggy.itunesmusic.framework.data.Song" />
+        <variable
+            name="isFavorite"
+            type="Boolean" />
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -88,9 +91,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-    <ImageView
+    <ImageButton
         android:id="@+id/iv_favorite"
-        android:clickable="true"
+        android:background="@null"
+        selected="@{isFavorite}"
         android:src="@drawable/image_favorite_selector"
         app:layout_constraintBottom_toTopOf="@id/guidelineBottom"
         app:layout_constraintEnd_toStartOf="@id/guidelineRight"

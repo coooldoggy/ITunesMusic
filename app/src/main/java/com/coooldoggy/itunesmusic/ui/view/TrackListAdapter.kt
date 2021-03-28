@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.coooldoggy.itunesmusic.databinding.ItemTrackBinding
 import com.coooldoggy.itunesmusic.framework.data.Song
 
-class TrackListAdapter(var tracklist: ArrayList<Song>) :
+class TrackListAdapter(var tracklist: ArrayList<Song>, var favoriteList: ArrayList<Song>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var starClick: StarClick? = null
 
@@ -21,8 +21,15 @@ class TrackListAdapter(var tracklist: ArrayList<Song>) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val song = tracklist[position]
-        (holder as TrackListItemHolder).bind(song)
+        var isFavorite = false
+        favoriteList.forEach {favSong ->
+            if (favSong.trackId == song.trackId){
+                isFavorite = true
+            }
+        }
+        (holder as TrackListItemHolder).bind(song, isFavorite)
         holder.starIcon.setOnClickListener {
+            holder.starIcon.isSelected = !holder.starIcon.isSelected
             starClick?.onClick(song)
         }
     }
@@ -44,8 +51,9 @@ class TrackListItemHolder(private val binding: ItemTrackBinding) :
         }
     }
 
-    fun bind(song: Song) {
+    fun bind(song: Song, isFavorite: Boolean) {
         binding.model = song
+        binding.isFavorite = isFavorite
         starIcon = binding.ivFavorite
         binding.executePendingBindings()
     }

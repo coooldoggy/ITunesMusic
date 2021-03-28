@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.coooldoggy.itunesmusic.R
@@ -16,6 +17,7 @@ import com.coooldoggy.itunesmusic.framework.data.Song
 import com.coooldoggy.itunesmusic.ui.common.BaseFragment
 import com.coooldoggy.itunesmusic.ui.viewmodel.FavoriteViewModel
 import com.coooldoggy.itunesmusic.ui.viewmodel.TrackListViewModel
+import kotlinx.coroutines.launch
 
 class TrackListFragment : BaseFragment(){
     private lateinit var viewDataBinding: FragmentTracklistBinding
@@ -33,16 +35,24 @@ class TrackListFragment : BaseFragment(){
             model = viewModel
         }
         observeViewModelEvent(this, viewModel)
+        observeViewModelEvent(viewLifecycleOwner, favViewModel)
         return viewDataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        trackListAdapter = TrackListAdapter(viewModel.trackList).apply {
+        trackListAdapter = TrackListAdapter(viewModel.trackList, favViewModel.favList).apply {
             starClick = object : TrackListAdapter.StarClick{
                 override fun onClick(song: Song) {
                     Log.d(TAG, "$song")
-                    favViewModel.insertSong(song)
+                    lifecycleScope.launch {
+                        val isFavorite = favViewModel.isFavorite(song).await()
+                        if (isFavorite){
+                            favViewModel.deleteSong(song)
+                        }else{
+                            favViewModel.insertSong(song)
+                        }
+                    }
                 }
             }
         }
@@ -70,6 +80,9 @@ class TrackListFragment : BaseFragment(){
                 viewDataBinding.rvTrack.adapter?.notifyDataSetChanged()
             }
             TrackListViewModel.EVENT_TRACK_LOAD_FAIL -> {
+            }
+            TrackListViewModel.EVENT_TRACK_FAV_DELETED -> {
+                viewDataBinding.rvTrack.adapter?.notifyDataSetChanged()
             }
         }
     }
