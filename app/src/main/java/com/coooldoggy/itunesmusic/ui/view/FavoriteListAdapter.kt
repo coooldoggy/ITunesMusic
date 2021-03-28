@@ -6,7 +6,6 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.coooldoggy.itunesmusic.databinding.ItemFavoriteBinding
 import com.coooldoggy.itunesmusic.framework.data.Song
-import com.coooldoggy.itunesmusic.ui.viewmodel.TrackListViewModel
 
 class FavoriteListAdapter(var favoriteList: ArrayList<Song>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {

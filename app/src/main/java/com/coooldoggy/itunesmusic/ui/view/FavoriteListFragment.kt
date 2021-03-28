@@ -4,11 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.coooldoggy.itunesmusic.R
 import com.coooldoggy.itunesmusic.databinding.FragmentFavoriteBinding
 import com.coooldoggy.itunesmusic.framework.data.Song
 import com.coooldoggy.itunesmusic.ui.common.BaseFragment
@@ -20,9 +18,7 @@ class FavoriteListFragment : BaseFragment(){
     private lateinit var favListAdapter: FavoriteListAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        viewDataBinding = DataBindingUtil.inflate<FragmentFavoriteBinding>(inflater, R.layout.fragment_favorite, container, false).apply {
-            lifecycleOwner = this@FavoriteListFragment
-        }
+        viewDataBinding = FragmentFavoriteBinding.inflate(inflater, container, false)
         observeViewModelEvent(viewLifecycleOwner, favViewModel)
         return viewDataBinding.root
     }
