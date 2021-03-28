@@ -6,6 +6,7 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.coooldoggy.itunesmusic.databinding.ItemFavoriteBinding
 import com.coooldoggy.itunesmusic.framework.data.Song
+import com.coooldoggy.itunesmusic.ui.viewmodel.TrackListViewModel
 
 class FavoriteListAdapter(var favoriteList: ArrayList<Song>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -23,13 +24,14 @@ class FavoriteListAdapter(var favoriteList: ArrayList<Song>) :
         val song = favoriteList[position]
         (holder as FavoriteListItemHolder).bind(song)
         holder.starIcon.setOnClickListener {
-            starClick?.onClick(song)
+            holder.starIcon.isSelected = !holder.starIcon.isSelected
+            starClick?.onClick(song, position)
         }
         holder.starIcon.isSelected = true
     }
 
     interface StarClick {
-        fun onClick(song: Song)
+        fun onClick(song: Song, position: Int)
     }
 }
 

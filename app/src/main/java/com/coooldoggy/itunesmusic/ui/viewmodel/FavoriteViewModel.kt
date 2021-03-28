@@ -1,17 +1,22 @@
 package com.coooldoggy.itunesmusic.ui.viewmodel
 
 import android.app.Application
+import android.util.Log
+import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.viewModelScope
 import com.coooldoggy.itunesmusic.framework.data.*
 import com.coooldoggy.itunesmusic.ui.common.BaseViewModel
 import com.coooldoggy.itunesmusic.ui.common.BaseViewModelEvent
+import com.coooldoggy.itunesmusic.ui.viewmodel.TrackListViewModel.Companion.EVENT_TRACK_FAV_DELETED
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class FavoriteViewModel(application: Application) : BaseViewModel(application) {
     companion object {
-        const val EVENT_FAVLIST_LOADED = 1000
+        const val EVENT_FAVLIST_LOADED = 2000
+        const val EVENT_FAVLIST_ITEM_DELETED = EVENT_FAVLIST_LOADED + 1
     }
     private val favoriteSongDao: FavoriteSongDao =
         FavoriteSongDB.getFavDB(application.applicationContext).favSongDao()
@@ -39,15 +44,17 @@ class FavoriteViewModel(application: Application) : BaseViewModel(application) {
     }
 
     fun deleteSong(song: Song) {
-        val songEntity = song as FavoriteSongEntity
         viewModelScope.launch {
             withContext(Dispatchers.IO){
-                favoriteSongDao.deleteFavoriteSong(songEntity)
+                favoriteSongDao.deleteFavoriteSong(song.collectionId)
             }
+            favList.remove(song)
+            sendToEvent.value = BaseViewModelEvent.Event(EVENT_FAVLIST_ITEM_DELETED, "")
         }
     }
 
     fun getAllFavoriteSong() {
+        favList.clear()
         viewModelScope.launch {
             withContext(Dispatchers.IO){
                 val dbResult = favoriteSongDao.getAllFavoriteSong()
@@ -67,6 +74,13 @@ class FavoriteViewModel(application: Application) : BaseViewModel(application) {
                 }
             }
             sendToEvent.value = BaseViewModelEvent.Event(EVENT_FAVLIST_LOADED, "")
+        }
+    }
+
+    fun isFavorite(song: Song) = viewModelScope.async {
+        withContext(Dispatchers.IO){
+            val result = favoriteSongDao.isRowIsExist(song.trackId)
+            result
         }
     }
 

@@ -1,15 +1,12 @@
 package com.coooldoggy.itunesmusic.ui.view
 
 import android.os.Bundle
-import android.view.MenuItem
-import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.coooldoggy.itunesmusic.R
 import com.coooldoggy.itunesmusic.databinding.ActivityMainBinding
-import com.coooldoggy.itunesmusic.framework.api.ApiManager
 import com.coooldoggy.itunesmusic.ui.common.BaseActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 

@@ -10,9 +10,13 @@ interface FavoriteSongDao {
     @Query("SELECT * FROM FavoriteSongEntity WHERE songId = (:songId)")
     fun getFavoriteSongFromID(songId: Int): FavoriteSongEntity
 
+    @Query("SELECT EXISTS(SELECT * FROM FavoriteSongEntity WHERE trackId = :trackId)")
+    fun isRowIsExist(trackId : Int) : Boolean
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertFavoriteSong(favoriteSongEntity: FavoriteSongEntity)
 
-    @Delete
-    fun deleteFavoriteSong(favoriteSongEntity: FavoriteSongEntity)
+    @Query("DELETE FROM FavoriteSongEntity WHERE collectionId=:trackId")
+    fun deleteFavoriteSong(trackId: Int)
+
 }

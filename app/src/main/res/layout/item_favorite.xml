@@ -90,7 +90,6 @@
 
     <ImageButton
         android:id="@+id/iv_favorite"
-        android:clickable="true"
         android:background="@null"
         android:src="@drawable/image_favorite_selector"
         app:layout_constraintBottom_toTopOf="@id/guidelineBottom"
