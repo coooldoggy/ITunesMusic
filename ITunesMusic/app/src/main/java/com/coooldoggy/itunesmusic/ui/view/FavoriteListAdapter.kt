@@ -3,7 +3,9 @@ package com.coooldoggy.itunesmusic.ui.view
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.coooldoggy.itunesmusic.R
 import com.coooldoggy.itunesmusic.databinding.ItemFavoriteBinding
 import com.coooldoggy.itunesmusic.framework.data.Song
 
@@ -12,7 +14,9 @@ class FavoriteListAdapter(var favoriteList: ArrayList<Song>) :
     var starClick: StarClick? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return FavoriteListItemHolder.from(parent)
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val dataBinding = DataBindingUtil.inflate<ItemFavoriteBinding>(layoutInflater, R.layout.item_favorite, parent,false)
+        return FavoriteListItemHolder(dataBinding)
     }
 
     override fun getItemCount(): Int {
@@ -36,19 +40,10 @@ class FavoriteListAdapter(var favoriteList: ArrayList<Song>) :
 
 class FavoriteListItemHolder(private val binding: ItemFavoriteBinding) :
     RecyclerView.ViewHolder(binding.root) {
-    lateinit var starIcon: ImageView
-
-    companion object {
-        fun from(parent: ViewGroup): RecyclerView.ViewHolder {
-            val layoutInflater = LayoutInflater.from(parent.context)
-            val binding = ItemFavoriteBinding.inflate(layoutInflater, parent, false)
-            return FavoriteListItemHolder(binding)
-        }
-    }
+     var starIcon: ImageView = binding.ivFavorite
 
     fun bind(song: Song) {
         binding.model = song
-        starIcon = binding.ivFavorite
-        binding.executePendingBindings()
+//        binding.executePendingBindings()
     }
 }
