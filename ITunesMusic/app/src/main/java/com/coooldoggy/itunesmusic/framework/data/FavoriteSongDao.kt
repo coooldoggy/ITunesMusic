@@ -16,7 +16,7 @@ interface FavoriteSongDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertFavoriteSong(favoriteSongEntity: FavoriteSongEntity)
 
-    @Query("DELETE FROM FavoriteSongEntity WHERE collectionId=:trackId")
+    @Query("DELETE FROM FavoriteSongEntity WHERE trackId=:trackId")
     fun deleteFavoriteSong(trackId: Int)
 
 }
