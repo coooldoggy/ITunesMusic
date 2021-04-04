@@ -74,7 +74,7 @@ class TrackListFragment : BaseFragment(){
     private val rvScrollListener = object : RecyclerView.OnScrollListener(){
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             val manager = recyclerView.layoutManager as LinearLayoutManager
-            if (manager.itemCount <= manager.findLastVisibleItemPosition() + 2){
+            if (manager.findLastCompletelyVisibleItemPosition() == viewModel.trackList.size - 1){
                 viewModel.loadTrackList()
             }
         }
