@@ -1,13 +1,10 @@
 package com.coooldoggy.itunesmusic.ui.viewmodel
 
 import android.app.Application
-import android.util.Log
-import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.viewModelScope
 import com.coooldoggy.itunesmusic.framework.data.*
 import com.coooldoggy.itunesmusic.ui.common.BaseViewModel
 import com.coooldoggy.itunesmusic.ui.common.BaseViewModelEvent
-import com.coooldoggy.itunesmusic.ui.viewmodel.TrackListViewModel.Companion.EVENT_TRACK_FAV_DELETED
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -44,12 +41,13 @@ class FavoriteViewModel(application: Application) : BaseViewModel(application) {
     }
 
     fun deleteSong(song: Song) {
+        val index = favList.indexOf(song)
         viewModelScope.launch {
             withContext(Dispatchers.IO){
-                favoriteSongDao.deleteFavoriteSong(song.collectionId)
+                favoriteSongDao.deleteFavoriteSong(song.trackId)
             }
             favList.remove(song)
-            sendToEvent.value = BaseViewModelEvent.Event(EVENT_FAVLIST_ITEM_DELETED, "")
+            sendToEvent.value = BaseViewModelEvent.Event(EVENT_FAVLIST_ITEM_DELETED, index)
         }
     }
 

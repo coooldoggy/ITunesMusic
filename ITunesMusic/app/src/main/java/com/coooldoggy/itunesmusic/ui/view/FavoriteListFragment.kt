@@ -54,7 +54,7 @@ class FavoriteListFragment : BaseFragment(){
                 viewDataBinding.rvFavorite.adapter?.notifyDataSetChanged()
             }
             FavoriteViewModel.EVENT_FAVLIST_ITEM_DELETED -> {
-                favViewModel.getAllFavoriteSong()
+                viewDataBinding.rvFavorite.adapter?.notifyItemRemoved(param as Int)
             }
         }
     }

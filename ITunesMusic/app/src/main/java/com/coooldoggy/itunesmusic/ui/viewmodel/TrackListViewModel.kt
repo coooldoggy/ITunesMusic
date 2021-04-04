@@ -2,6 +2,7 @@ package com.coooldoggy.itunesmusic.ui.viewmodel
 
 import android.app.Application
 import androidx.databinding.ObservableInt
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.coooldoggy.itunesmusic.framework.api.ApiManager
 import com.coooldoggy.itunesmusic.framework.data.Song
@@ -17,7 +18,6 @@ class TrackListViewModel(application: Application) : BaseViewModel(application) 
     companion object {
         const val EVENT_TRACK_LOADED = 1000
         const val EVENT_TRACK_LOAD_FAIL = EVENT_TRACK_LOADED + 1
-        const val EVENT_TRACK_FAV_DELETED = EVENT_TRACK_LOAD_FAIL + 1
     }
 
     fun loadTrackList() {

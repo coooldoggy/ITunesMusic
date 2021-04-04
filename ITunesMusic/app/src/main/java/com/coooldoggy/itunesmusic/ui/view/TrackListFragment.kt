@@ -89,8 +89,8 @@ class TrackListFragment : BaseFragment(){
             TrackListViewModel.EVENT_TRACK_LOAD_FAIL -> {
                 viewDataBinding.vsError.root.visibility = View.VISIBLE
             }
-            TrackListViewModel.EVENT_TRACK_FAV_DELETED -> {
-                viewDataBinding.rvTrack.adapter?.notifyDataSetChanged()
+            FavoriteViewModel.EVENT_FAVLIST_ITEM_DELETED-> {
+                viewDataBinding.rvTrack.adapter?.notifyItemChanged(param as Int)
             }
         }
     }
